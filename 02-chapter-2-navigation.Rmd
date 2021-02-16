@@ -1,0 +1,66 @@
+# Navigation
+
+- `pwd` – Print name of current working directory
+- `ls` – List directory contents
+- `cd` – Change directory
+
+## Current Working Directory
+
+To print the path of the current working directory, use `pwd`.
+
+```bash
+$ pwd
+/home/kelly
+```
+
+## Listing Directory Contents
+
+To list the contents of a directory, use `ls`.
+
+```bash
+$ cd /
+$ ls
+backup  boot  etc   lib    media  opt   root  sbin  sys  usr
+bin     dev   home  lib64  mnt    proc  run   srv   tmp  var
+```
+
+## Changing the Current Working Directory
+
+- Absolute Pathnames: represented by the leading slash in the pathname
+  - Ex. `/usr/bin`
+- Relative Pathnames: starts from the working directory
+  - ".": refers to the working directory
+  - ".." the working directory's parent directory
+
+To change the current working directory, use `cd`.
+
+```bash
+$ cd /home/kelly
+$ pwd
+/home/kelly
+```
+
+**Some Helpful Shortcuts**
+
+| Shortcut | Result |
+| :-- | :-- |
+| `cd` | Changes the working directory to your home directory.|
+| `cd -` | Changes the working directory to the previous working directory. |
+| `cd ~user_name` | Changes the working directory to the home directory of user_name. For example, cd ~bob will change the directory to the home directory of user “bob.” |
+
+
+
+
+> **Important Facts About Filenames**
+`r newline()`
+`r newline()`
+1. Filenames that begin with a period character are hidden. This only means that `ls` will not list them unless you say `ls -a`.
+`r newline()`
+2. Filenames and commands in Linux, like Unix, are case sensitive.
+`r newline()`
+3. Linux has no concept of a “file extension” like some other operating systems. You may name files any way you like. The contents and/or purpose of a file is determined by other means. Although Unix-like operating systems don’t use file extensions to determine the contents/purpose of files, many application programs do.
+`r newline()`
+4. Though Linux supports long filenames that may contain embedded spaces and punctuation characters, limit the punctuation characters in the names of files you create to period, dash, and underscore. ***Most importantly, do not embed spaces in filenames***. If you want to represent spaces between words in a filename, use underscore characters. You will thank yourself later.
+`r newline()`
+[@TLCL]
+

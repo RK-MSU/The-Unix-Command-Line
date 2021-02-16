@@ -1,0 +1,170 @@
+--- 
+title: "The Linux Command Line"
+subtitle: "Notes"
+# author: "Yihui Xie"
+# date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib]
+biblio-style: biblatex
+link-citations: yes
+# description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+---
+
+# Welcome {-}
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+
+
+<!--chapter:end:index.Rmd-->
+
+# What Is the Shell?
+
+> *"When we speak of the command line, we are really referring to the shell. The shell is a program that takes keyboard commands and passes them to the operating system to carry out. Almost all Linux distributions supply a shell program from the GNU Project called bash. The name “bash” is an acronym for “Bourne Again SHell”, a reference to the fact bash is an enhanced replacement for sh, the original Unix shell program written by Steve Bourne."* [@TLCL]
+
+
+## Simple Commands {-}
+
+### Date {-}
+
+Display the current time and date `date`:
+
+```bash
+$ date
+Thu Mar 8 15:09:41 EST 2018
+```
+
+### Calendar {-}
+
+Display a calendar of the current month
+
+```bash
+$ cal
+   February 2021      
+Su Mo Tu We Th Fr Sa  
+    1  2  3  4  5  6  
+ 7  8  9 10 11 12 13  
+14 15 16 17 18 19 20  
+21 22 23 24 25 26 27  
+28
+```
+
+### Disk Drives {-}
+
+To see the current amount of free space on our disk drives, enter `df`.
+
+```bash
+$ df
+Filesystem     1K-blocks    Used Available Use% Mounted on
+devtmpfs         1512552       0   1512552   0% /dev
+tmpfs            1528228       0   1528228   0% /dev/shm
+tmpfs            1528228    8692   1519536   1% /run
+tmpfs            1528228       0   1528228   0% /sys/fs/cgroup
+/dev/sda1       35634176 4182988  31451188  12% /
+/dev/sda3       33796768   49176  32001112   1% /backup
+tmpfs             305644       4    305640   1% /run/user/1001
+```
+
+Likewise, to display the amount of free memory, enter the `free` command.
+
+```bash
+$ free
+              total        used        free      shared  buff/cache   available
+Mem:        3056460      205784     2656980        8760      193696     2689788
+Swap:       3145724           0     3145724
+
+```
+
+
+### Ending a Terminal Session {-}
+
+Entering `exit` in the cammand prompt or by pressing `Ctrl+d`
+
+```bash
+$ exit
+```
+
+
+
+
+<!--chapter:end:01-chapter-1-what-is-the-shell.Rmd-->
+
+# Navigation
+
+- `pwd` – Print name of current working directory
+- `ls` – List directory contents
+- `cd` – Change directory
+
+## Current Working Directory
+
+To print the path of the current working directory, use `pwd`.
+
+```bash
+$ pwd
+/home/kelly
+```
+
+## Listing Directory Contents
+
+To list the contents of a directory, use `ls`.
+
+```bash
+$ cd /
+$ ls
+backup  boot  etc   lib    media  opt   root  sbin  sys  usr
+bin     dev   home  lib64  mnt    proc  run   srv   tmp  var
+```
+
+## Changing the Current Working Directory
+
+- Absolute Pathnames: represented by the leading slash in the pathname
+  - Ex. `/usr/bin`
+- Relative Pathnames: starts from the working directory
+  - ".": refers to the working directory
+  - ".." the working directory's parent directory
+
+To change the current working directory, use `cd`.
+
+```bash
+$ cd /home/kelly
+$ pwd
+/home/kelly
+```
+
+**Some Helpful Shortcuts**
+
+| Shortcut | Result |
+| :-- | :-- |
+| `cd` | Changes the working directory to your home directory.|
+| `cd -` | Changes the working directory to the previous working directory. |
+| `cd ~user_name` | Changes the working directory to the home directory of user_name. For example, cd ~bob will change the directory to the home directory of user “bob.” |
+
+
+
+
+> **Important Facts About Filenames**
+`r newLine()`
+`r newLine()`
+1. Filenames that begin with a period character are hidden. This only means that `ls` will not list them unless you say `ls -a`.
+`r newLine()`
+2. Filenames and commands in Linux, like Unix, are case sensitive.
+`r newLine()`
+3. Linux has no concept of a “file extension” like some other operating systems. You may name files any way you like. The contents and/or purpose of a file is determined by other means. Although Unix-like operating systems don’t use file extensions to determine the contents/purpose of files, many application programs do.
+`r newLine()`
+4. Though Linux supports long filenames that may contain embedded spaces and punctuation characters, limit the punctuation characters in the names of files you create to period, dash, and underscore. ***Most importantly, do not embed spaces in filenames***. If you want to represent spaces between words in a filename, use underscore characters. You will thank yourself later.
+`r newLine()`
+[@TLCL]
+
+
+<!--chapter:end:02-chapter-2-navigation.Rmd-->
+
+`r if (knitr::is_html_output()) '# References {-}'`
+
+<!--chapter:end:100-references.Rmd-->
+

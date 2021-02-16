@@ -1,0 +1,68 @@
+# What Is the Shell?
+
+> *"When we speak of the command line, we are really referring to the shell. The shell is a program that takes keyboard commands and passes them to the operating system to carry out. Almost all Linux distributions supply a shell program from the GNU Project called bash. The name “bash” is an acronym for “Bourne Again SHell”, a reference to the fact bash is an enhanced replacement for sh, the original Unix shell program written by Steve Bourne."* [@TLCL]
+
+
+## Simple Commands {-}
+
+### Date {-}
+
+Display the current time and date `date`:
+
+```bash
+$ date
+Thu Mar 8 15:09:41 EST 2018
+```
+
+### Calendar {-}
+
+Display a calendar of the current month
+
+```bash
+$ cal
+   February 2021      
+Su Mo Tu We Th Fr Sa  
+    1  2  3  4  5  6  
+ 7  8  9 10 11 12 13  
+14 15 16 17 18 19 20  
+21 22 23 24 25 26 27  
+28
+```
+
+### Disk Drives {-}
+
+To see the current amount of free space on our disk drives, enter `df`.
+
+```bash
+$ df
+Filesystem     1K-blocks    Used Available Use% Mounted on
+devtmpfs         1512552       0   1512552   0% /dev
+tmpfs            1528228       0   1528228   0% /dev/shm
+tmpfs            1528228    8692   1519536   1% /run
+tmpfs            1528228       0   1528228   0% /sys/fs/cgroup
+/dev/sda1       35634176 4182988  31451188  12% /
+/dev/sda3       33796768   49176  32001112   1% /backup
+tmpfs             305644       4    305640   1% /run/user/1001
+```
+
+Likewise, to display the amount of free memory, enter the `free` command.
+
+```bash
+$ free
+              total        used        free      shared  buff/cache   available
+Mem:        3056460      205784     2656980        8760      193696     2689788
+Swap:       3145724           0     3145724
+
+```
+
+
+### Ending a Terminal Session {-}
+
+Entering `exit` in the cammand prompt or by pressing `Ctrl+d`
+
+```bash
+$ exit
+```
+
+
+
