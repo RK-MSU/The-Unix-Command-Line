@@ -3,7 +3,7 @@
 > *"When we speak of the command line, we are really referring to the shell. The shell is a program that takes keyboard commands and passes them to the operating system to carry out. Almost all Linux distributions supply a shell program from the GNU Project called bash. The name “bash” is an acronym for “Bourne Again SHell”, a reference to the fact bash is an enhanced replacement for sh, the original Unix shell program written by Steve Bourne."* [@TLCL]
 
 
-## Simple Commands {-}
+## Simple Commands {#ch-1 .unnumbered}
 
 ### Date {-}
 
@@ -56,7 +56,7 @@ Swap:       3145724           0     3145724
 ```
 
 
-### Ending a Terminal Session {-}
+## Ending a Terminal Session {-}
 
 Entering `exit` in the cammand prompt or by pressing `Ctrl+d`
 

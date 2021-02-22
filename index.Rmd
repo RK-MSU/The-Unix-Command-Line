@@ -13,11 +13,8 @@ link-citations: yes
 
 # Welcome {-}
 
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```
 
+
+
+[Directories Found on Linux Systems](#directories-found-on-linux-systems)
 

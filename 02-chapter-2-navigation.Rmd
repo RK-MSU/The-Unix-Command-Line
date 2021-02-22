@@ -1,10 +1,10 @@
-# Navigation
+# Navigation {#ch-2}
 
 - `pwd` – Print name of current working directory
 - `ls` – List directory contents
 - `cd` – Change directory
 
-## Current Working Directory
+## Current Working Directory  {-}
 
 To print the path of the current working directory, use `pwd`.
 
@@ -13,7 +13,7 @@ $ pwd
 /home/kelly
 ```
 
-## Listing Directory Contents
+## Listing Directory Contents  {-}
 
 To list the contents of a directory, use `ls`.
 
@@ -24,7 +24,7 @@ backup  boot  etc   lib    media  opt   root  sbin  sys  usr
 bin     dev   home  lib64  mnt    proc  run   srv   tmp  var
 ```
 
-## Changing the Current Working Directory
+## Changing the Current Working Directory  {-}
 
 - Absolute Pathnames: represented by the leading slash in the pathname
   - Ex. `/usr/bin`
@@ -49,18 +49,11 @@ $ pwd
 | `cd ~user_name` | Changes the working directory to the home directory of user_name. For example, cd ~bob will change the directory to the home directory of user “bob.” |
 
 
+**Important Facts About Filenames**
 
-
-> **Important Facts About Filenames**
-`r newline()`
-`r newline()`
 1. Filenames that begin with a period character are hidden. This only means that `ls` will not list them unless you say `ls -a`.
-`r newline()`
 2. Filenames and commands in Linux, like Unix, are case sensitive.
-`r newline()`
 3. Linux has no concept of a “file extension” like some other operating systems. You may name files any way you like. The contents and/or purpose of a file is determined by other means. Although Unix-like operating systems don’t use file extensions to determine the contents/purpose of files, many application programs do.
-`r newline()`
 4. Though Linux supports long filenames that may contain embedded spaces and punctuation characters, limit the punctuation characters in the names of files you create to period, dash, and underscore. ***Most importantly, do not embed spaces in filenames***. If you want to represent spaces between words in a filename, use underscore characters. You will thank yourself later.
-`r newline()`
 [@TLCL]
 

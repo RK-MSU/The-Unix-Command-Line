@@ -1,0 +1,4 @@
+# Advanced Keyboard Tricks
+
+- `clear` – Clear the screen
+- `history` – Display the contents of the history list

@@ -1,0 +1,261 @@
+# Redirection
+
+In this lesson we are going to unleash what may be the coolest feature of the command
+line. It's called I/O redirection. The “I/O” stands for *input/output* and with this facility we
+can redirect the input and output of commands to and from files, as well as connect multiple commands together into powerful command pipelines. To show off this facility, we
+will introduce the following commands:
+
+
+- `cat` – Concatenate files
+- `sort` – Sort lines of text
+- `uniq` – Report or omit repeated lines
+- `grep` – Print lines matching a pattern
+- `wc` – Print newline, word, and byte counts for each file
+- `head` – Output the first part of a file
+- `tail` – Output the last part of a file
+- `tee` – Read from standard input and write to standard output and files
+
+
+Keeping with the Unix theme of “everything is a file,” programs such as ls actually send
+their results to a special file called standard output (often expressed as stdout) and their
+status messages to another file called standard error (stderr). By default, both standard
+output and standard error are linked to the screen and not saved into a disk file.
+
+## Redirecting Standard Output {.unnumbered}
+
+we use the `>` redirection operator followed by the name of the file.
+
+```bash
+$ ls -l path > file
+```
+
+Example:
+
+```bash
+$ ls -l ~/Desktop > ls-output.txt
+```
+
+Append to an output file using `>>`, for example:
+
+```bash
+$ ls -l path >> ls-output.txt
+$ ls -l path >> ls-output.txt
+$ ls -l ls-output.txt
+-rm-rm-r-- 1 me me 503636 2018-02-01 15:45 ls-output.txt
+```
+
+## Redirecting Standard Error {.unnumbered}
+
+standard input, output and error, the shell references them internally as file descriptors 0, 1, and 2, respectively
+
+```bash
+$ ls -l /bin/usr 2> ls-error.txt
+```
+
+
+The file descriptor “2” is placed immediately before the redirection operator to perform
+the redirection of standard error to the file ls-error.txt.
+
+
+### Redirecting Standard Output and Standard Error to One File {.unnumbered}
+
+```bash
+$ ls -l /bin/usr > ls-output.txt 2>&1
+```
+
+> **Notice that the order of the redirections is significant**. The redirection of stan-
+dard error must always occur after redirecting standard output or it doesn't work.
+The following example redirects standard error to the file ls-output.txt:
+`r newLine()``r newLine()`
+>ls-output.txt 2>&1
+`r newLine()``r newLine()`
+However, if the order is changed to the following, standard error is directed to
+the screen.
+`r newLine()``r newLine()`
+2>&1 >ls-output.txt
+
+
+
+
+Recent versions of bash provide a second, more streamlined method for performing this
+combined redirection shown here:
+
+```bash
+$ ls -l /bin/usr &> ls-output.txt
+```
+
+In this example, we use the single notation &> to redirect both standard output and standard error to the file ls-output.txt. We can also append the standard output and
+standard error streams to a single file like so:
+
+```bash
+$ ls -l /bin/usr &>> ls-output.txt
+```
+
+
+### Disposing of Unwanted Output {.unnumbered}
+
+Sometimes “silence is golden,” and we don't want output from a command, we just want
+to throw it away.
+
+To suppress error messages from a command, we do this:
+
+```bash
+$ ls -l path 2> /dev/null
+```
+
+
+> **/dev/null In Unix Culture**
+`r newLine()``r newLine()`
+The bit bucket is an ancient Unix concept and because of its universality, it has
+appeared in many parts of Unix culture. When someone says he/she is sending
+your comments to /dev/null, now you know what it means.
+
+
+## Redirecting Standard Input {.unnumbered}
+
+
+
+### cat – Concatenate Files {.unnumbered}
+
+The cat command reads one or more files and copies them to standard output like so:
+
+```bash
+$ cat ls-output.txt
+```
+
+Join multiple files:
+
+```bash
+$ cat movie.mpeg.0* > movie.mpeg
+```
+
+
+## Pipelines {.unnumbered}
+
+Using the pipe operator | (vertical bar), the
+standard output of one command can be piped into the standard input of another.
+
+```bash
+$ command1 | command2
+```
+
+```bash
+$ ls -l /usr/bin | less
+```
+
+### Filters {.unnumbered}
+
+Pipelines are often used to perform complex operations on data. It is possible to put several commands together into a pipeline. Frequently, the commands used this way are referred to as filters. Filters take input, change it somehow, and then output it.
+
+```bash
+$ ls /bin /usr/bin | sort | less
+```
+
+
+### uniq - Report or Omit Repeated Lines {.unnumbered}
+
+The uniq command is often used in conjunction with sort. uniq accepts a sorted list
+of data from either standard input or a single filename argument (see the uniq man page
+for details) and, by default, removes any duplicates from the list.
+
+```bash
+$ ls /bin /usr/bin | sort | uniq | less
+```
+
+
+If we want to see the list of duplicates instead, we add the “-d” option to uniq
+like so:
+
+```bash
+$ ls /bin /usr/bin | sort | uniq -d | less
+```
+
+
+### wc – Print Line, Word, and Byte Counts {.unnumbered}
+
+
+The wc (word count) command is used to display the number of lines, words, and bytes
+contained in files. Here's an example:
+
+```bash
+$ wc ls-output.txt
+7902 64566 503634 ls-output.txt
+```
+
+In this case, it prints out three numbers: lines, words, and bytes contained in ls-output.txt.
+
+The “-l” option limits its output to only report lines. Adding it
+to a pipeline is a handy way to count things. To see the number of items we have in our
+sorted list, we can do this:
+
+
+```bash
+$ ls /bin /usr/bin | sort | uniq | wc -l
+2728
+```
+
+### grep – Print Lines Matching a Pattern {.unnumbered}
+
+`grep` is a powerful program used to find text patterns within files. It's used like this:
+
+```bash
+grep pattern [file...]
+```
+
+There are a couple of handy options for grep:
+
+- `-i`, which causes grep to ignore case when performing the search (normally searches are case sensitive)
+- `-v`, which tells grep to print only those lines that do not match the pattern.
+
+### head / tail – Print First / Last Part of Files {.unnumbered}
+
+The head command prints the first ten lines of a file, and the
+tail command prints the last ten lines. By default, both commands print ten lines of
+text, but this can be adjusted with the -n option.
+
+
+```bash
+$ head -n 4 ls-output.txt 
+total 16
+-rw-rw-r--  1 rkelly rkelly   51 Feb  1 21:24 ls-error.txt
+-rw-rw-r--  1 rkelly rkelly    0 Feb  1 22:16 ls-output.txt
+drwxrwxr-x  2 rkelly rkelly 4096 Feb  1 20:50 temp_one
+$ tail -n 4 ls-output.txt 
+-rw-rw-r--  1 rkelly rkelly    0 Feb  1 22:16 ls-output.txt
+drwxrwxr-x  2 rkelly rkelly 4096 Feb  1 20:50 temp_one
+drwxrwxr-x  2 rkelly rkelly 4096 Feb  1 20:50 temp_two
+drwxrwxr-x 26 rkelly rkelly 4096 Feb  1 21:57 year_dirs
+```
+
+These can be used in pipelines as well:
+
+```bash
+$ ls /usr/bin | tail -n 5
+zipsplit
+zjsdecode
+zless
+zmore
+znew
+```
+
+tail has an option which allows us to view files in real time. This is useful for watching
+the progress of log files as they are being written.
+
+
+Using the “-f” option, tail continues to monitor the file, and when new lines are appended, they immediately appear on the display. This continues until we press Ctrl-c.
+
+
+
+
+### tee – Read from Stdin and Output to Stdout and Files {.unnumbered}
+
+he tee program reads standard input and copies it to
+both standard output (allowing the data to continue down the pipeline) and to one or more
+files. This is useful for capturing a pipeline's contents at an intermediate stage of processing.
+
+
+```bash
+$ ls /usr/bin | tee ls.txt | grep zip
+```
+
+

@@ -1,0 +1,156 @@
+# Permissions
+
+In this chapter we will look at this essential part of system security and introduce the following commands:
+
+- `id` – Display user identity
+- `chmod` – Change a file's mode
+- `umask` – Set the default file permissions
+- `su` – Run a shell as another user
+- `sudo` – Execute a command as another user
+- `chown` – Change a file's owner
+- `chgrp` – Change a file's group ownership
+- `passwd` – Change a user's password
+
+
+### Owners, Group Members, and Everybody Else
+
+When we were exploring the system in Chapter 3, we may have encountered a problem
+when trying to examine a file such as /etc/shadow:
+
+
+```bash
+$ file /etc/shadow
+/etc/shadow: regular file, no read permission
+$ less /etc/shadow
+/etc/shadow Permission denied
+```
+
+The reason for this error message is that, as regular users, we do not have permission to
+read this file.
+
+
+
+In the Unix security model, a user may own files and directories. When a user owns a file
+or directory, the user has control over its access. Users can, in turn, belong to a group
+consisting of one or more users who are given access to files and directories by their
+owners. In addition to granting access to a group, an owner may also grant some set of
+access rights to everybody, which in Unix terms is referred to as the world. To find out information about your identity, use the id command.
+
+
+```bash
+$ id
+uid=500(me) gid=500(me) groups=500(me)
+```
+
+User accounts are defined in the /etc/passwd file and groups
+are defined in the /etc/group file.
+When user accounts and groups are created, these
+files are modified along with /etc/shadow which holds information about the user's
+password. For each user account, the /etc/passwd file defines the user (login) name,
+uid, gid, account's real name, home directory, and login shell. If we examine the contents
+of /etc/passwd and /etc/group, we notice that besides the regular user accounts,
+there are accounts for the superuser (uid 0) and various other system users.
+
+
+
+While many Unix-like systems assign regular users to a common group such as “users”,
+modern Linux practice is to create a unique, single-member group with the same name as
+the user. This makes certain types of permission assignment easier.
+
+
+### Reading, Writing, and Executing
+
+Access rights to files and directories are defined in terms of read access, write access, and
+execution access. If we look at the output of the ls command, we can get some clue as to
+how this is implemented:
+
+```bash
+$ > foo.txt
+$ ls -l foo.txt
+-rw-rw-r-- 1    me   me    0 2016-03-06 14:52 foo.txt
+```
+
+
+The first 10 characters of the listing are the file attributes. The first of these characters is
+the file type.
+
+**File Types**
+
+| Attribute | File Type |
+| :-- | :-- |
+| - | A regular file. |
+| d | A directory. |
+| l | A symbolic link. Notice that with symbolic links, the remaining file attributes are always “rwxrwxrwx” and are dummy values. The real file attributes are those of the file the symbolic link points to. |
+| c | A *character special* file. This file type refers to a device that handles data as a stream of bytes, such as a terminal or `/dev/null`. |
+| b | A *block special file*. This file type refers to a device that handles data in blocks, such as a hard drive or DVD drive. |
+
+
+The remaining nine characters of the file attributes, called the file mode, represent the
+read, write, and execute permissions for the file's owner, the file's group owner, and
+everybody else.
+
+| Owner | Group | World |
+| :--: |  :--: | :--: |
+| rwx | rwx | rwx |
+
+
+**Permission Attributes**
+
+| Attribute | Files | Directories |
+| :-- | :-- | :-- |
+| r | Allows a file to be opened and read. | Allows a directory's contents to be listed if the execute attribute is also set. |
+| w | Allows a file to be written to or truncated, however this attribute does not allow files to be renamed or deleted. The ability to delete or rename files is determined by directory attributes. | Allows files within a directory to be created, deleted, and renamed if the execute attribute is also set. |
+| x | Allows a file to be treated as a program and executed. Program files written in scripting languages must also be set as readable to be executed. | Allows a directory to be entered, e.g., cd directory. |
+
+
+
+**Permission Attribute Examples**
+
+| File Attribute | Meaning |
+| :-- | :-- |
+| `-rwx------` | A regular file that is readable, writable, and executable by the file's owner. No one else has any access. |
+| `-rw-------` | A regular file that is readable and writable by the file's owner. No one else has any access. |
+| `-rw-r--r--` | A regular file that is readable and writable by the file's owner. Members of the file's owner group may read the file. The file is world-readable. |
+| `-rwxr-xr-x` | A regular file that is readable, writable, and executable by the file's owner. The file may be read and executed by everybody else. |
+| `-rw-rw----` | A regular file that is readable and writable by the file's owner and members of the file's group owner only. |
+| `lrwxrwxrwx` | A symbolic link. All symbolic links have “dummy” permissions. The real permissions are kept with the actual file pointed to by the symbolic link. |
+| `drwxrwx---` | A directory. The owner and the members of the owner group may enter the directory and create, rename and remove files within the directory. |
+| `drwxr-x---` | A directory. The owner may enter the directory and create, rename, and delete files within the directory. Members of the owner group may enter the directory but cannot create, delete, or rename files. |
+
+
+#### chmod – Change File Mode
+
+To change the mode (permissions) of a file or directory, the chmod command is used. Be aware that only the file’s owner or the superuser can change the mode of a file or directory. chmod supports two distinct ways of specifying mode changes: octal number representation, or symbolic representation.
+
+**File Modes in Binary and Octal**
+
+| Octal | Binary | File Mode |
+| :--: |  :--: | :--: |
+| 0 | 000 | `---` |
+| 1 | 001 | `--x` |
+| 2 | 010 | `-w-` |
+| 3 | 011 | `-wx` |
+| 4 | 100 | `r--` |
+| 5 | 101 | `r-x` |
+| 6 | 110 | `rw-` |
+| 7 | 111 | `rwx` |
+
+By using three octal digits, we can set the file mode for the owner, group owner, and world.
+
+```bash
+$ > foo.txtx
+$ ls -l foo.txt
+-rw-rw-r-- 1 me   me 0 2016-03-06 14:52 foo.txt
+$ chmod 600 foo.txt
+$ ls -l foo.txt
+-rw------- 1 me   me 0 2016-03-06 14:52 foo.txt
+```
+
+By passing the argument “600”, we were able to set the permissions of the owner to read and write while removing all permissions from the group owner and world.
+
+`chmod` also supports a symbolic notation for specifying file modes. Symbolic notation is divided into three parts.
+
+- Who the change will affect
+- Which operation will be performed
+- What permission will be set.
+
